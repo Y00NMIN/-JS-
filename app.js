@@ -4,9 +4,8 @@ const ctx =canvas.getContext("2d");
 canvas.width = 700;
 canvas.height = 700;
 
-ctx.strokeStyle ="#2c2c2c";
-ctx.lineWidth=2.5;
-
+ctx.strokeStyle ="#2c2c2c"; //context안에있는 선은 모두 이 색을 가진다.
+ctx.lineWidth=2.5; //그 선의 너비는 2.5px이다.
 let painting = false;
 
 function stopPainting(){
@@ -22,13 +21,13 @@ function onMouseMove(event){
   const y = event.offsetY;
 
   if(!painting) {
-    ctx.beginPath();
-    ctx.moveTo(x, y);
+    ctx.beginPath(); //Path는 선이다.
+    ctx.moveTo(x, y); //path를 x,y로 옮긴다.
   } else {
-    ctx.lineTo(x, y);
-    ctx.stroke();
+    ctx.lineTo(x, y); //linto는 path전에서 현재 path까지
+    ctx.stroke(); //stroke 즉, 획을 긋는다.
   }
-}
+} 
 
 function onMouseDown(event){
   painting = true;
