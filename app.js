@@ -1,13 +1,17 @@
 const canvas = document.querySelector("#jsCanvas");
 const ctx =canvas.getContext("2d");
 const colors = document.querySelector(".jsColor");
+const range = document.querySelector("#jsRange");
+const mode = document.querySelector(".jsMode");
 
 canvas.width = 700;
 canvas.height = 700;
 
 ctx.strokeStyle ="#2c2c2c"; //context안에있는 선은 모두 이 색을 가진다.
 ctx.lineWidth=2.5; //그 선의 너비는 2.5px이다.
+
 let painting = false;
+let filling =false;
 
 function stopPainting(){
   painting = false;
@@ -34,9 +38,24 @@ function onMouseDown(event){
   painting = true;
 }
 
-function changeColorClick(event){
+function handleColorClick(event){
   const color = event.target.style.backgroundColor;
   ctx.strokeStyle = color;
+}
+
+function handleRangeChange(event) {
+  const size = event.target.value;
+  ctx.lineWidth= size;
+}
+
+function handleModeClick(event) {
+  if(filling == true){
+    filling = false;
+    mode.innerText ="Fill";
+  }else{
+    filling =true;
+    mode.innerText = "Paint";
+  }
 }
 
 if(canvas){
@@ -46,4 +65,12 @@ if(canvas){
   canvas.addEventListener("mouseleave", stopPainting);
 }
 
-Array.from(colors).forEach(color=>color.addEventListner("click", changeColorClick));
+Array.from(colors).forEach(color=>color.addEventListner("click", handleColorClick));
+
+if(range){
+  range.addEventListner("input",handleRangeChange);
+}
+
+if(mode){
+  mode.addEventListner("click", handleModeClick);
+}
