@@ -3,6 +3,7 @@ const ctx = canvas.getContext("2d");
 const colors = document.getElementsByClassName("jsColor");
 const range = document.getElementById("jsRange");
 const mode = document.getElementById("jsMode");
+const save =document.getElementById("jsSave");
 
 const INITIAL_COLOR = "#2c2c2c";
 const CANVAS_SIZE = 700;
@@ -75,6 +76,14 @@ function handleCM(event){
   event.preventDefault();
 }
 
+function hadleSaveClick(){
+  const image = canvas.toDataURL();
+  const link =document.createElement("a");
+  link.download ="PaintJS";
+  link.href = image;
+  link.click();
+}
+
 if(canvas){
   canvas.addEventListener("mousemove", onMouseMove);
   canvas.addEventListener("mousedown", startPainting);
@@ -92,7 +101,10 @@ if (range) {
   range.addEventListener("input", handleRangeChange);
 }
 
-
 if (mode) {
   mode.addEventListener("click", handleModeClick);
+}
+
+if(save){
+  save.addEventListener("click", hadleSaveClick);
 }
