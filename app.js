@@ -1,13 +1,19 @@
-const canvas = document.querySelector("#jsCanvas");
-const ctx =canvas.getContext("2d");
-const colors = document.querySelector(".jsColor");
-const range = document.querySelector("#jsRange");
-const mode = document.querySelector(".jsMode");
+const canvas = document.getElementById("jsCanvas");
+const ctx = canvas.getContext("2d");
+const colors = document.getElementsByClassName("jsColor");
+const range = document.getElementById("jsRange");
+const mode = document.getElementById("jsMode");
 
-canvas.width = 700;
-canvas.height = 700;
+const INITIAL_COLOR = "#2c2c2c";
+const CANVAS_SIZE = 700;
 
-ctx.strokeStyle ="#2c2c2c"; //context안에있는 선은 모두 이 색을 가진다.
+canvas.width = CANVAS_SIZE;
+canvas.height = CANVAS_SIZE;
+
+ctx.fillStyle="white";
+ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+ctx.strokeStyle =INITIAL_COLOR; //context안에있는 선은 모두 이 색을 가진다.
+ctx.fillStyle = INITIAL_COLOR;
 ctx.lineWidth=2.5; //그 선의 너비는 2.5px이다.
 
 let painting = false;
@@ -38,9 +44,10 @@ function onMouseDown(event){
   painting = true;
 }
 
-function handleColorClick(event){
+function handleColorClick(event) {
   const color = event.target.style.backgroundColor;
   ctx.strokeStyle = color;
+  ctx.fillStyle = color;
 }
 
 function handleRangeChange(event) {
@@ -48,7 +55,7 @@ function handleRangeChange(event) {
   ctx.lineWidth= size;
 }
 
-function handleModeClick(event) {
+function handleModeClick() {
   if(filling == true){
     filling = false;
     mode.innerText ="Fill";
@@ -58,19 +65,34 @@ function handleModeClick(event) {
   }
 }
 
+function handleCanvasClick(){
+  if(filling){
+    ctx.fillRect(0 , 0 , CANVAS_SIZE , CANVAS_SIZE );
+  } 
+}
+
+function handleCM(event){
+  event.preventDefault();
+}
+
 if(canvas){
   canvas.addEventListener("mousemove", onMouseMove);
   canvas.addEventListener("mousedown", startPainting);
   canvas.addEventListener("mouseup", stopPainting);
   canvas.addEventListener("mouseleave", stopPainting);
+  canvas.addEventListener("click",handleCanvasClick);
+  canvas.addEventListener("contextmenu", handleCM);
 }
 
-Array.from(colors).forEach(color=>color.addEventListner("click", handleColorClick));
+Array.from(colors).forEach(color =>
+  color.addEventListener("click", handleColorClick)
+);
 
-if(range){
-  range.addEventListner("input",handleRangeChange);
+if (range) {
+  range.addEventListener("input", handleRangeChange);
 }
 
-if(mode){
-  mode.addEventListner("click", handleModeClick);
+
+if (mode) {
+  mode.addEventListener("click", handleModeClick);
 }
